@@ -1,0 +1,11 @@
+﻿.inputContainer {
+    position: relative;
+}
+
+.icon {
+    position: absolute;
+    top: 10px;
+    left: auto;
+    right: 20px;
+    color: royalblue;
+}
