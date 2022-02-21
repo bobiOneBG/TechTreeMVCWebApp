@@ -40,6 +40,9 @@
             return PartialView("_UserLoginPartial", model);
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logоut(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();

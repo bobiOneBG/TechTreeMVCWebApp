@@ -1,8 +1,31 @@
-﻿<li class="nav-item dropdown show">
-    <a class="dropdown-toggle nav-link text-dark" href="#" data-bs-toggle="dropdown"><i class="fa-solid fa-screwdriver"></i>&nbsp;Admin</a>
-    <div class="dropdown-menu">
-        <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="fas fa-box mr-2"></i>&nbsp;&nbsp;&nbsp;Categories</a>
-        <a class="dropdown-item" href="#"><i class="fas fa-users mr-2"></i>&nbsp;&nbsp;Users to Category</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" asp-area="Admin" asp-controller="MediaType" asp-action="Index"><i class="fa-regular fa-folder-open"></i>&nbsp;&nbsp;&nbsp;Media Types</a>
-    </div>
+﻿@using TechTreeMVCWebApplication.Data
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
+@if (signInManager.IsSignedIn(User) && await userManager.IsInRoleAsync(userManager.GetUserAsync(User).Result, "Admin"))
+{
+    <li class="nav-item dropdown show">
+        <a class="dropdown-toggle nav-link text-dark" href="#" data-bs-toggle="dropdown"><i class="fa-solid fa-screwdriver"></i>&nbsp;Admin</a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="fas fa-box mr-2"></i>&nbsp;&nbsp;&nbsp;Categories</a>
+            <a class="dropdown-item" href="#"><i class="fas fa-users mr-2"></i>&nbsp;&nbsp;Users to Category</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" asp-area="Admin" asp-controller="MediaType" asp-action="Index"><i class="fa-regular fa-folder-open"></i>&nbsp;&nbsp;&nbsp;Media Types</a>
+        </div>
+    </li>
+}
+
+else if(!signInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="#Courses"><i class="fas fa-laptop-code mr-1 text-info"></i>Courses</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="#ContactUs"><i class="fas fa-phone-alt mr-1 text-info"></i>Contact Us</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="#AboutUs"><i class="fas fa-chalkboard-teacher mr-1 text-info"></i>About Us</a>
+    </li>
+}

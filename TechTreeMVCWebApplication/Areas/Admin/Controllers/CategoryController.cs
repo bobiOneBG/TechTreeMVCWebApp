@@ -1,5 +1,6 @@
 ﻿namespace TechTreeMVCWebApplication.Areas.Admin.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using System.Linq;
@@ -8,6 +9,7 @@
     using TechTreeMVCWebApplication.Entities;
 
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context; 

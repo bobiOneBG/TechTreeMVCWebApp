@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using TechTreeMVCWebApplication.Data;
-using TechTreeMVCWebApplication.Entities;
-
-namespace TechTreeMVCWebApplication.Areas.Admin.Controllers
+﻿namespace TechTreeMVCWebApplication.Areas.Admin.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using TechTreeMVCWebApplication.Data;
+    using TechTreeMVCWebApplication.Entities;
+
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class MediaTypeController : Controller
     {
         private readonly ApplicationDbContext _context;

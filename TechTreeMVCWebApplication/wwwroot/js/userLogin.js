@@ -30,11 +30,12 @@
 
                 if (hasErrors == true) {
                     $("#userLoginModal").html(data);
-
+                    /*  code to wire Up event for the login button for the case when login dialog is rendered on the screen 
+                     *  after failed login attempt */
                     userLoginButton = $("#userLoginModal button[name='login']").click(onUserLoginClick);
 
                     var form = $("#userLoginForm");
-
+                    /* code for re-initialize unobtrusive validation functionality */
                     $(form).removeData("validator");
                     $(form).removeData("unobtrusiveValidation");
                     $.validator.unobtrusive.parse(form);
@@ -45,6 +46,7 @@
 
                 }
             },
+            /* handle a case when the post request failed (404 not found, 500 internal server error etc) */
             error: function (xhr, ajaxOptions, thrownError) {
                 var errorText = "Status: " + xhr.status + " - " + xhr.statusText;
 
@@ -54,16 +56,4 @@
             }
         });
     };
-
-    var userLogOutButton = $("#userLoginModal button[name='login']").click(onUserLogоutClick)
-
-    function onUserLogоutClick() {
-        $.ajax({
-            url: 'UserAuth/Logоut',
-            cache: false,
-            success: function (msg) {
-                window.location.href = window.location;
-            }
-        });
-    }
 });
