@@ -9,10 +9,12 @@
     public class UserAuthController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserAuthController(SignInManager<ApplicationUser> signInManager)
+        public UserAuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [AllowAnonymous]
@@ -56,6 +58,40 @@
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        public async Task<IActionResult> RegisterUser(RegistrationModel model)
+        {
+            model.RegistrationInValid="true";
+
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Address = model.Address,
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                  model.RegistrationInValid = "";
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return PartialView("_UserRegistrationPartial", model);
+                }
+
+                else
+                {
+                  ModelState.AddModelError("", "Registration attempt failed");
+                }
+            }
+
+            return PartialView("_UserRegistrationPartial", model);
         }
     }
 }
