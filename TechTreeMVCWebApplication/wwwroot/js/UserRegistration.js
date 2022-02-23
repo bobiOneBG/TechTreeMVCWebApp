@@ -1,13 +1,51 @@
-﻿////$(function () {
+﻿$(function () {
 
-////    var sss = $("#userRegistrationModal button[name='register']").click(onUserRegisterClick);
+    $("#userRegistrationModal button[name = 'register']").prop("disabled", true);
 
-////    function onUserRegisterClick() {
-////        alert("Uraaaaaa")
-////    };
-////});
+    $("#userRegistrationModal input[name = 'AcceptUserAgreement']").click(onAcceptUserAgreementClick);
 
-$(function () {
+    function onAcceptUserAgreementClick() {
+
+        if ($(this).is(":checked")) {
+            $("#userRegistrationModal button[name = 'register']").prop("disabled", false);
+        }
+
+        else {
+            $("#userRegistrationModal button[name = 'register']").prop("disabled", true);
+        }
+    }
+
+    $("#userRegistrationModal input[name = 'Email']").blur(function () {
+
+        var email = $("#userRegistrationModal input[name = 'Email']").val();
+
+        var url = "UserAuth/UserNameExist?userName=" + email;
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                if (data == true) {
+
+                    /* create empty div element to the _UserRegistrationPartial with id="alert_placeholder_register" */
+                    PresentClosableBootstrapAlert("#alert_placeholder_register", "warning", "Invalid Email", "This email address has already been registered");                  
+                }
+
+                else {
+                    CloseAlert("#alert_placeholder_register");
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+                var errorText = "Status: " + xhr.status + " - " + xhr.statusText;
+
+                PresentClosableBootstrapAlert("#alert_placeholder_register", "danger", "Error!", errorText);
+
+                console.error(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
+            }
+        });
+    });
+
     var registerUserButton = $("#userRegistrationModal button[name = 'register']").click(onUserRegisterClick);
 
     function onUserRegisterClick() {
@@ -57,6 +95,10 @@ $(function () {
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
+
+                var errorText = "Status: " + xhr.status + " - " + xhr.statusText;
+
+                PresentClosableBootstrapAlert("#alert_placeholder_register", "danger", "Error!", errorText);
 
                 console.error(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
             }

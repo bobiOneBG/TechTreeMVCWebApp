@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using TechTreeMVCWebApplication.Data;
     using TechTreeMVCWebApplication.Models;
 
@@ -10,13 +11,16 @@
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public UserAuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public UserAuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _context = context;
         }
 
+    
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -62,7 +66,7 @@
 
         public async Task<IActionResult> RegisterUser(RegistrationModel model)
         {
-            model.RegistrationInValid="true";
+            model.RegistrationInValid = "true";
 
             if (ModelState.IsValid)
             {
@@ -78,7 +82,7 @@
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                  model.RegistrationInValid = "";
+                    model.RegistrationInValid = "";
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
@@ -87,11 +91,26 @@
 
                 else
                 {
-                  ModelState.AddModelError("", "Registration attempt failed");
+                    AddErrorsToModelState(result);
                 }
             }
 
             return PartialView("_UserRegistrationPartial", model);
+        }
+
+        [AllowAnonymous]
+        public async Task<bool> UserNameExist(string userName)
+        {
+            bool userNameExist = await _context.Users
+                .AnyAsync(user => user.UserName.ToUpper() == userName.ToUpper());
+
+            return userNameExist;
+        }
+
+        private void AddErrorsToModelState(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
         }
     }
 }
