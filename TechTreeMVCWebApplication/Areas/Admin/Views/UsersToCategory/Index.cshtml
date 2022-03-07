@@ -1,8 +1,8 @@
-﻿@model IEnumerable<TechTreeMVCWebApplication.Entities.Category>
+﻿@model IEnumerable<Category>
 
 @using TechTreeMVCWebApplication.Extensions
 @using TechTreeMVCWebApplication.Areas.Admin.Models
-
+@using TechTreeMVCWebApplication.Entities
 
 <h3 class="mt-4">Add Members to Category</h3>
 <hr />
@@ -13,7 +13,7 @@
             <div class="form-group">
                 <h4>Category</h4>
                 <select id="CategoryId" name="CategoryId" class="form-control" asp-items="Model.ConvertToSelectList(1)">
-                    <option value="0">--Please choose a Category--</option>
+                    <option value="">--Please choose a Category--</option>
                 </select>
             </div>
         </div>
