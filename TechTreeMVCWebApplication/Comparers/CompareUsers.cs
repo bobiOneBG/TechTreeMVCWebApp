@@ -3,7 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using TechTreeMVCWebApplication.Areas.Admin.Models;
 
-    public class CompareUsers
+    public class CompareUsers : IEqualityComparer<UserModel>
     {
         public bool Equals(UserModel x, UserModel y)
         {

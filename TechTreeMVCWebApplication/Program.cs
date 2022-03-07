@@ -15,6 +15,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IDataFunctions, DataFunctions>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
