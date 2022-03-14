@@ -38,6 +38,7 @@
 
         public string RegistrationInValid { get; set; }
 
-        //public int CategoryId { get; set; }
+        // CourseCard    1. Course card on HomeScreen section "Cources" hidden input field
+        public int CategoryId { get; set; }
     }
 }

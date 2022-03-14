@@ -1,8 +1,5 @@
 ﻿@model CategoryDetailsModel
 
-@using Microsoft.AspNetCore.Identity
-@using TechTreeMVCWebApplication.Data
-
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
@@ -11,7 +8,7 @@
 
 @if (Model.GroupedCategoryItemsByCategoryModels != null)
 {
-    <div class="row">
+     <div class="row">
         <div class="col-md-6">
             <h2>Your Courses</h2>
         </div>
@@ -22,6 +19,7 @@
 
     @if (Model.GroupedCategoryItemsByCategoryModels.Count() > 0)
     {
+
         <div class="row mt-3">
             <div class="col-md-12">
 

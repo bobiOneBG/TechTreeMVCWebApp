@@ -6,6 +6,8 @@
         @foreach (Category item in Model)
         {
             <div class="col-md-3 mt-3">
+
+                @* 2. data for hidden input field for Home screen, section "Cources" list of cards categoryId *@
                 <a href="#" class="RegisterLink text-dark" data-categoryId="@item.Id">
                     <div class="card">
                         <img class="img-thumbnail" src="@item.ThumbnailImagePath" alt="@item.Title">

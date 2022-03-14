@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using TechTreeMVCWebApplication.Data;
+    using TechTreeMVCWebApplication.Entities;
     using TechTreeMVCWebApplication.Models;
 
     public class UserAuthController : Controller
@@ -20,7 +21,7 @@
             _context = context;
         }
 
-    
+
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -80,11 +81,17 @@
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     model.RegistrationInValid = "";
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    if (model.CategoryId != 0)
+                    {
+                        await AddCategoryToUser(user.Id, model.CategoryId);
+                    }
 
                     return PartialView("_UserRegistrationPartial", model);
                 }
@@ -96,6 +103,19 @@
             }
 
             return PartialView("_UserRegistrationPartial", model);
+        }
+
+        private async Task AddCategoryToUser(string userId, int categoryId)
+        {
+            var userCategory = new UserCategory
+            {
+                UserId = userId,
+                CategoryId = categoryId,
+            };
+
+            _context.UserCategory.Add(userCategory);
+
+            await _context.SaveChangesAsync();
         }
 
         [AllowAnonymous]

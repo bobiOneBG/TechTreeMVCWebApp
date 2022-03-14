@@ -1,4 +1,18 @@
 ﻿$(function () {
+    /* 3. if the user cancel registration process set categoryId value to zero */
+    $("#userRegistrationModal").on('hidden.bs.modal', function (e) {
+        $("#userRegistrationModal input[name='CategoryId']").val('0');
+    });
+    /* 3. code to display userRegistrationDialog to the user after the user clicks CourseCard */
+        /* 3. use RegisterLink css class name as selector */
+        $('.RegisterLink').click(function () {
+            /* code to fire the inserts the categoryId value, stored within relevant ancor tag's data-catogoryId custom attribute
+             * into CategoryId hidden text field on user registration dialog when the user clicks a courseCard */
+            $("#userRegistrationModal input[name='CategoryId']").val($(this).attr('data-categoryId'));
+            /* 3. code to fire that will display the userregistration dialog to the user when a course card is clicked */
+            $("#userRegistrationModal").modal("show");
+
+        });
 
     $("#userRegistrationModal button[name = 'register']").prop("disabled", true);
 
@@ -59,6 +73,9 @@
         var lastName = $("#userRegistrationModal input[name='LastName']").val();
         var address = $("#userRegistrationModal input[name='Address']").val();
 
+        /* hidden input field for Home screen, section "Cources" list of cards and assign to user bellow */
+        var categoryId = $("#userRegistrationModal input[name='CategoryId']").val();
+
         var user = {
             __RequestAntiForgeryToken: antiForgeryToken,
             Email: email,
@@ -67,7 +84,8 @@
             FirstName: firstName,
             LastName: lastName,
             Address: address,
-            AcceptUserAgreement: true
+            AcceptUserAgreement: true,
+            CategoryId: categoryId,
         };
 
         $.ajax({
